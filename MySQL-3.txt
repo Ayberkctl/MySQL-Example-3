@@ -61,8 +61,49 @@ source /Users/ayberk/Desktop/MySQL-Example-3/db/calisanlar.sql
 
 SELECT * FROM calisanlar;
 ALTER TABLE calisanlar CHARSET=utf8;
+
 SELECT sehir, MIN(maas) as Minimum,MAX(maas) as Maksimum, COUNT(id) as kisiler 
 FROM calisanlar GROUP BY sehir HAVING Minimum >2000;
+
+SELECT sehir, meslek, MIN(maas) as Minimum,MAX(maas) as Maksimum, COUNT(id) as kisiler 
+FROM calisanlar GROUP BY sehir , meslek;
+
 SELECT COUNT(id) as kisiler FROM calisanlar GROUP BY sehir;
+SELECT COUNT(id) as meslekler FROM calisanlar GROUP BY meslek;
+SELECT * FROM calisanlar WHERE ad LIKE "%k";(finish k) || "k%" (start k) || "a%r"(start a and finish r)
+SELECT * FROM calisanlar WHERE ad LIKE "%a%"; 
+SELECT * FROM calisanlar WHERE ad LIKE "__b%"|| SOYAD LIKE "__TA%";
+SELECT * FROM calisanlar WHERE id=2 || id=5 || id=6 || id=7;
+SELECT * FROM calisanlar WHERE id IN(1,7,8);
+SELECT * FROM calisanlar WHERE id NOT IN(1,7,8);
 
+source /Users/ayberk/Desktop/MySQL-Example-3/db/meslekler.sql
+explain meslekler;
+SELECT meslek FROM meslekler;
+SELECT * FROM calisanlar WHERE meslek IN ("Developer","sanatçı");
+SELECT * FROM calisanlar WHERE meslek IN (SELECT meslek FROM meslekler);
 
+source /Users/ayberk/Desktop/MySQL-Example-3/db/diziler.sql
+SELECT FIND_IN_SET("d","a,b,c,d,e,f");
+SELECT * FROM diziler;
+SELECT * FROM diziler WHERE turler IN(1);
+SELECT * FROM diziler WHERE turler LIKE "%2%";
+SELECT * FROM diziler WHERE FIND_IN_SET(2,turler);
+SELECT * FROM diziler WHERE FIND_IN_SET(2,turler) || FIND_IN_SET("breaking bad",dizi_adi);
+
+SELECT * FROM calisanlar WHERE maas>2000 && maas<3000;
+SELECT * FROM calisanlar WHERE maas BETWEEN 2000 AND 3000;
+
+source /Users/ayberk/Desktop/MySQL-Example-3/db/join.sql
+SELECT * FROM konular;
+SELECT * FROM konular INNER JOIN uyeler ON uyeler.uye_id = konular.uye_id;
+SELECT * FROM konular LEFT JOIN uyeler ON uyeler.uye_id = konular.uye_id;
+SELECT * FROM konular RIGHT JOIN uyeler ON uyeler.uye_id = konular.uye_id;
+SELECT * FROM konular INNER JOIN uyeler ON uyeler.uye_id = konular.uye_id INNER JOIN kategoriler ON kategoriler.id = konular.kategori_id;
+
+SELECT baslik,icerik,konular.uye_id,uye_kadi,uye_sifre,uye_eposta,kayit_tarih FROM konular
+INNER JOIN uyeler ON uyeler.uye_id = konular.uye_id 
+INNER JOIN kategoriler ON kategoriler.id = konular.kategori_id;
+
+SELECT * FROM calisanlar;
+SELECT MIN(maas) as minMaas , MAX(maas) as maxMaas, SUM(maas) as toplamMaas,COUNT(id) as toplamKisi FROM calisanlar;
